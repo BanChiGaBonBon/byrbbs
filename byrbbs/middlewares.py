@@ -2,6 +2,7 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import requests
 from scrapy import signals
 import  time
 from scrapy.http import HtmlResponse
@@ -61,6 +62,7 @@ class ByrbbsDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
+    cookies={}
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -72,7 +74,7 @@ class ByrbbsDownloaderMiddleware:
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
-
+        print("\n\n请求路径"+request.url+"\n\n\n")
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object
@@ -97,6 +99,10 @@ class ByrbbsDownloaderMiddleware:
             time.sleep(2)
             print("登录完成，获取源码")
             row_response = spider.browser.page_source
+            # cookies = spider.browser.get_cookies()
+            # for item in cookies:
+            #     self.cookies[item['name']]=item['value']
+            # print(self.cookies)
             print("获取源码完成")
             return HtmlResponse(url=spider.browser.current_url,body=row_response,encoding="utf8",request=request)
         else:
@@ -105,6 +111,7 @@ class ByrbbsDownloaderMiddleware:
             time.sleep(2)
             row_response = spider.browser .page_source
             return  HtmlResponse(url=spider.browser.current_url,body=row_response,encoding="utf8",request=request)
+
 
     def process_exception(self, request, exception, spider):
         # Called when a download handler or a process_request()

@@ -11,4 +11,4 @@ class ByrbbsItem(scrapy.Item):
     # name = scrapy.Field()
     title = scrapy.Field()
     url = scrapy.Field()
-    info = scrapy.Field()
+    content = scrapy.Field()
